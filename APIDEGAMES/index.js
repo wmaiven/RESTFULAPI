@@ -23,7 +23,7 @@ function auth(req, res, next) {
     if (authToken != undefined) {
         // Divide o token para extrair seu valor
         const bearer = authToken.split(' ');
-        var token = bearer[1];
+        let token = bearer[1];
 
         // Verifica se o token é válido usando a chave secreta
         jwt.verify(token, JWTSecret, (err, data) => {
@@ -46,7 +46,7 @@ function auth(req, res, next) {
 }
 
 // Banco de dados em memória (para fins de demonstração)
-var DB = {
+const DB = {
     games: [
         {
             id: 23,
@@ -94,8 +94,8 @@ app.get("/game/:id", auth, (req, res) => {
     if (isNaN(req.params.id)) {
         res.sendStatus(400);
     } else {
-        var id = parseInt(req.params.id);
-        var game = DB.games.find(g => g.id == id);
+        let id = parseInt(req.params.id);
+        let game = DB.games.find(g => g.id == id);
         if (game != undefined) {
             res.statusCode = 200;
             res.json(game);
@@ -107,7 +107,7 @@ app.get("/game/:id", auth, (req, res) => {
 
 // Rota para adicionar um novo jogo (requer autenticação)
 app.post("/game", auth, (req, res) => {
-    var { title, price, year } = req.body;
+    let { title, price, year } = req.body;
     DB.games.push({
         id: 2323,
         title,
@@ -122,8 +122,8 @@ app.delete("/game/:id", auth, (req, res) => {
     if (isNaN(req.params.id)) {
         res.sendStatus(400);
     } else {
-        var id = parseInt(req.params.id);
-        var index = DB.games.findIndex(g => g.id == id);
+        let id = parseInt(req.params.id);
+        let index = DB.games.findIndex(g => g.id == id);
         if (index == -1) {
             res.sendStatus(404);
         } else {
@@ -138,10 +138,10 @@ app.put("/game/:id", (req, res) => {
     if (isNaN(req.params.id)) {
         res.sendStatus(400);
     } else {
-        var id = parseInt(req.params.id);
-        var game = DB.games.find(g => g.id == id);
+        let id = parseInt(req.params.id);
+        let game = DB.games.find(g => g.id == id);
         if (game != undefined) {
-            var { title, price, year } = req.body;
+            let { title, price, year } = req.body;
             if (title != undefined) {
                 game.title = title;
             }
@@ -160,10 +160,10 @@ app.put("/game/:id", (req, res) => {
 
 // Rota para autenticação de usuário (login)
 app.post("/auth", (req, res) => {
-    var { email, password } = req.body;
+    let { email, password } = req.body;
 
     if (email != undefined) {
-        var user = DB.users.find(u => u.email == email);
+        let user = DB.users.find(u => u.email == email);
         if (user != undefined) {
             if (user.password == password) {
                 // Gera um token JWT para o usuário autenticado
