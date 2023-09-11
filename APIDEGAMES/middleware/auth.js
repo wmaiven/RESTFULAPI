@@ -20,8 +20,8 @@ function auth(req, res, next) {
             } else {
                 // Se o token for válido, adiciona informações do usuário à requisição
                 req.token = token;
-                req.loggedUser = { id: data.id, email: data.email };
-                req.empresa = "Guia do programador";
+                req.loggedUser = { id: data.id, email: data.email, name: data.name};
+                req.empresa = "weslley enterprise";
                 next();
             }
         });

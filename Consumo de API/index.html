@@ -102,7 +102,7 @@
     axios.get("http://localhost:45679/games",axiosConfig).then(res => {
         let games = res.data.games;
         let list = document.getElementById("games");
-        console.log(games);
+        console.log(res.data);
         games.forEach(game => {
             let item = document.createElement("li");
 
