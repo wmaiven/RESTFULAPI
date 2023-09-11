@@ -4,9 +4,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-
-// Chave secreta para geração e verificação de tokens JWT
-const JWTSecret = "djkshahjksdajksdhasjkdhasjkdhasjkdhasjkd";
+const {auth} = require('./middleware/auth');
+const {JWTSecret} = require('./middleware/auth');
 
 // Middleware para permitir solicitações de diferentes origens (CORS)
 app.use(cors());
@@ -14,36 +13,6 @@ app.use(cors());
 // Middleware para fazer o parse de dados no corpo das requisições em formato JSON
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// Middleware de autenticação para proteger rotas
-function auth(req, res, next) {
-    // Verifica a presença de um token JWT no cabeçalho da requisição
-    const authToken = req.headers['authorization'];
-
-    if (authToken != undefined) {
-        // Divide o token para extrair seu valor
-        const bearer = authToken.split(' ');
-        let token = bearer[1];
-
-        // Verifica se o token é válido usando a chave secreta
-        jwt.verify(token, JWTSecret, (err, data) => {
-            if (err) {
-                res.status(401);
-                res.json({ err: "Token inválido!" });
-            } else {
-                // Se o token for válido, adiciona informações do usuário à requisição
-                req.token = token;
-                req.loggedUser = { id: data.id, email: data.email };
-                req.empresa = "Guia do programador";
-                next();
-            }
-        });
-    } else {
-        // Se não houver token no cabeçalho, retorna erro de autenticação
-        res.status(401);
-        res.json({ err: "Token inválido!" });
-    }
-}
 
 // Banco de dados em memória (para fins de demonstração)
 const DB = {
@@ -79,6 +48,12 @@ const DB = {
             name: "Guilherme",
             email: "guigg@gmail.com",
             password: "java123"
+        },
+        {
+            id: 49,
+            name: "weslley",
+            email: "testeapi@gmail.com",
+            password: "1234"
         }
     ]
 }
